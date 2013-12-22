@@ -79,26 +79,51 @@ public class Koordinaatti {
         return alkuun;
     }
 
+    /**
+     * Palauttaa tiedon, siitä onko etsintäkerralla käyty kyseisessä 
+     * koordinaatissa
+     * @return
+     */
     public boolean getKayty() {
         return kayty;
     }
 
+    /**
+     * Asettaa tiedon, siitä onko etsintä käynyt kyseisessä koordinaatissa
+     * @param kayty
+     */
     public void setKayty(boolean kayty) {
         this.kayty = kayty;
     }
 
+    /**
+     * Palauttaa koordinaatin, josta "this."koordinaatiin on päästy.
+     * @return
+     */
     public Koordinaatti getEdellinen() {
         return edellinen;
     }
 
+    /**
+     * Asettaa edellisen koordinaatin
+     * @param edellinen
+     */
     public void setEdellinen(Koordinaatti edellinen) {
         this.edellinen = edellinen;
     }
     
+    /**
+     * Asettaa koordinaatille karttamerkin, joka tulkitaan esim. # -> seinä
+     * @param merkki
+     */
     public void setMerkki(char merkki){
         this.merkki = merkki;
     }
     
+    /**
+     * Palauttaa kyseisen koordinaatin karttamerkin
+     * @return
+     */
     public char getMerkki(){
         return this.merkki;
     }

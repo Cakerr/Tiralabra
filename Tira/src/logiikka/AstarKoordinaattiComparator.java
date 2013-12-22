@@ -7,7 +7,8 @@ package logiikka;
 import java.util.Comparator;
 
 /**
- *
+ *Comparator Astaria käytettäessä, jonka avulla priorityQueue/keko
+ * vertailee kahta Koordinaattia keskenänsä.
  * @author Ari
  */
 public class AstarKoordinaattiComparator implements Comparator<Koordinaatti> {

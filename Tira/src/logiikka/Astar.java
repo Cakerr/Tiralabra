@@ -10,14 +10,22 @@ public class Astar {
 
     private Koordinaatti[][] kartta;
 
+    /**
+     * Luokan konstruktori, saa parametrinaan luokan käytämän kartan
+     *
+     * @param kartta
+     */
     public Astar(Koordinaatti[][] kartta) {
         this.kartta = kartta;
     }
 
     /**
+     * Etsii kartasta lyhimmän reitin lahto-solmusta maali-solmuun, ja palauttaa
+     * sen Reitti-oliona.
      *
      * @param lahto
      * @param maali
+     * @return
      */
     public Reitti findPath(Koordinaatti lahto, Koordinaatti maali) {
         PriorityQueue<Koordinaatti> keko =
@@ -33,13 +41,21 @@ public class Astar {
             lisaaNaapuritKekoon(kasiteltava, keko, maali);
         }
         if (maali.getKayty()) {
-            
+
             tulostaReitti(maali, reitti);
         }
-        
+
         return reitti;
     }
 
+    /**
+     * Apumetodi findPath:lle, joka lisää kaikki käsiteltävänä olevan solmun
+     * naapurit kekoon ja kutsuu asetaNaapurinEtaisyydet-metodia.
+     *
+     * @param kasiteltava
+     * @param keko
+     * @param maali
+     */
     public void lisaaNaapuritKekoon(Koordinaatti kasiteltava,
             PriorityQueue<Koordinaatti> keko, Koordinaatti maali) {
 
@@ -53,7 +69,12 @@ public class Astar {
         asetaNaapurinEtaisyydet(kasiteltava.getY() - 1, kasiteltava.getX() + 1, keko, kasiteltava, maali);
 
     }
-
+    /*
+     *Apumetodi, jonka avulla karsitaan epäkelvot koordinaatit, jonka jälkeen
+     * kutsutaan metodeja, jotka todellisuudessa asettavat etäisyyden maaliin ja
+     * lähtösolmuun. 
+     *
+     */
     private void asetaNaapurinEtaisyydet(int naapurinY, int naapurinX,
             PriorityQueue<Koordinaatti> keko, Koordinaatti kasiteltava,
             Koordinaatti maali) {
@@ -71,6 +92,9 @@ public class Astar {
         }
     }
 
+    /**
+     * Laskee parametrina annetun koordinaatin etäisyyden maalisolmuun
+     */
     private void asetaEtaisyysMaaliin(Koordinaatti naapuri, Koordinaatti maali) {
         int suurempi = Math.max(Math.abs(naapuri.getY() - maali.getY()),
                 Math.abs(naapuri.getX() - maali.getX()));
@@ -79,7 +103,9 @@ public class Astar {
         int etaisyys = pienempi + (suurempi - pienempi);
         naapuri.setMaaliin(etaisyys);
     }
-
+    /*
+     * Asettaa annetun koordinaatin etäisyyn lähtösolmuun.
+     */
     private void asetaEtaisyysAlkuun(Koordinaatti naapuri,
             Koordinaatti kasiteltava) {
         int matkaAlkuun = kasiteltava.getAlkuun() + 1;
@@ -106,7 +132,9 @@ public class Astar {
         }
         lahto.setAlkuun(0);
     }
-
+    /*
+     * Lisää löydetyn reitin koordinaatti-oliot parametrina saatuun reittiin.
+     */
     private void tulostaReitti(Koordinaatti node, Reitti reitti) {
         if (node.getEdellinen() != null) {
             tulostaReitti(node.getEdellinen(), reitti);
@@ -114,7 +142,9 @@ public class Astar {
         reitti.lisaaNode(node);
         //System.out.println("Y: " + node.getY() + " X: " + node.getX());
     }
-
+    /*
+     * tarkistaa onko parametrina saadussa koordinaatissa seinä ('#').
+     */
     private boolean onkoSeina(Koordinaatti node) {
         return node.getMerkki() == '#';
     }
