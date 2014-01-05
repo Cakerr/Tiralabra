@@ -14,7 +14,9 @@ import static org.junit.Assert.*;
 public class AstarTest {
 
     private Astar astar;
-    private Koordinaatti[][] kartta1;
+    private Kartta kartta1;
+    private Kartta kartta2;
+    private Koordinaatti[][] taulukkoKartta1;
 
     public AstarTest() {
     }
@@ -29,15 +31,22 @@ public class AstarTest {
 
     @Before
     public void setUp() {
-        kartta1 = new Koordinaatti[10][10];
+       char[][] taulukko = new char[10][10];
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                kartta1[i][j] = new Koordinaatti(i, j);
-                kartta1[i][j].setAlkuun(j);
-                kartta1[i][j].setMaaliin(12);
+                if (i == 9 && j == 9){
+                    taulukko[i][j] = 'M';
+                } else if (i == 0 && j == 0){
+                    taulukko[i][j] = 'S';
+                } else {
+                    taulukko[i][j] = ' ';
+                }
             }
         }
+        kartta1 = new Kartta(taulukko);
+        taulukkoKartta1 = kartta1.getKartta();
         astar = new Astar(kartta1);
+        kartta2 = new Kartta("EiRatkaisua.png");
     }
 
     @After
@@ -46,11 +55,10 @@ public class AstarTest {
 
     @Test
     public void relaxAllToimiiOikein() {
-        Koordinaatti maali = kartta1[9][9];
-        astar.relaxAll(kartta1[0][0], kartta1[9][9]);
-        for (int i = 0; i < kartta1.length; i++) {
-            for (int j = 0; j < kartta1.length; j++) {
-                Koordinaatti node = kartta1[i][j];
+        astar.relaxAll();
+        for (int i = 0; i < kartta1.getKorkeus(); i++) {
+            for (int j = 0; j < kartta1.getLeveys(); j++) {
+                Koordinaatti node = kartta1.getKoordinaatti(i, j);
                 if (i == 0 && j == 0) {
                     assertTrue(node.getAlkuun() == 0);
                 } else {
@@ -61,7 +69,8 @@ public class AstarTest {
     }
     
     @Test
-    public void astarPalauttaaOikeanPituisenReitin(){
-        
+    public void palauttaaNullJosReittiaEiloydy(){
+        astar = new Astar(kartta2);
+        assertEquals(null, astar.findPath().getNext());
     }
 }

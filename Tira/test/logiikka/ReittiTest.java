@@ -37,7 +37,7 @@ public class ReittiTest {
    
     @Test
     public void nextPalauttaaNullJosReittiOnTyhja(){
-        assertEquals(null, reitti.next());
+        assertEquals(null, reitti.getNext());
     }
     
     @Test
@@ -47,11 +47,11 @@ public class ReittiTest {
         reitti.lisaaNode(kor1);
         reitti.lisaaNode(kor2);
         
-        Koordinaatti testi = reitti.next();
+        Koordinaatti testi = reitti.getNext();
         assertEquals(kor1, testi);
-        testi = reitti.next();
+        testi = reitti.getNext();
         assertEquals(kor2, testi);
-        testi = reitti.next();
+        testi = reitti.getNext();
         assertEquals(null, testi);
         
     }

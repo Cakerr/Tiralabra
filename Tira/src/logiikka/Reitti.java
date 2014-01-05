@@ -26,7 +26,7 @@ public class Reitti {
     }
 
     /**
-     * Luodaan Reitti, jolla ei ole yhtään nodea.
+     * Luodaan Reitti, jossa ei ole yhtään nodea.
      */
     public Reitti() {
         lahto = null;
@@ -40,7 +40,7 @@ public class Reitti {
      *
      * @return
      */
-    public Koordinaatti next() {
+    public Koordinaatti getNext() {
         if (next == null) {
             return null;
         }

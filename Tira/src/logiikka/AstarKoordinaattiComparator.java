@@ -13,10 +13,16 @@ import java.util.Comparator;
  */
 public class AstarKoordinaattiComparator implements Comparator<Koordinaatti> {
 
+    /**
+     *
+     * @param k1
+     * @param k2
+     * @return
+     */
     @Override
-    public int compare(Koordinaatti o1, Koordinaatti o2) {
-        int o1Etaisyys = o1.getAlkuun()+o1.getMaaliin();
-        int o2Etaisyys = o2.getAlkuun()+o2.getMaaliin();
+    public int compare(Koordinaatti k1, Koordinaatti k2) {
+        int o1Etaisyys = k1.getAlkuun()+k1.getMaaliin();
+        int o2Etaisyys = k2.getAlkuun()+k2.getMaaliin();
         return o1Etaisyys-o2Etaisyys;
     }
 

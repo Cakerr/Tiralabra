@@ -49,6 +49,9 @@ public class Koordinaatti {
      * @param maaliin
      */
     public void setMaaliin(int maaliin) {
+        if (maaliin < 0){
+            this.maaliin = 0;
+        }
         this.maaliin = maaliin;
     }
 
@@ -67,6 +70,9 @@ public class Koordinaatti {
      * @param alkuun
      */
     public void setAlkuun(int alkuun) {
+        if (alkuun < 0){
+            this.alkuun = 0;
+        }
         this.alkuun = alkuun;
     }
 
