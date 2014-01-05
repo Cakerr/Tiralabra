@@ -69,7 +69,7 @@ public class AstarTest {
     }
     
     @Test
-    public void palauttaaNullJosReittiaEiloydy(){
+    public void palauttaaTyhjanReitinJosReittiaEiloydy(){
         astar = new Astar(kartta2);
         assertEquals(null, astar.findPath().getNext());
     }
