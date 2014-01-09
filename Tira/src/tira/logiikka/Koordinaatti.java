@@ -1,4 +1,4 @@
-package logiikka;
+package tira.logiikka;
 
 /**
  *
@@ -9,10 +9,11 @@ public class Koordinaatti {
     private int x;
     private int y;
     private Koordinaatti edellinen;
-    private int maaliin; // heurrestiikan arvio noden etäisyydestä maaliin.
-    private int alkuun;
+    private double maaliin; // heurrestiikan arvio noden etäisyydestä maaliin.
+    private double alkuun;
     private boolean kayty;
     private char merkki;
+    private boolean keossa;
 
     /**
      * Luodaan koordinaatti, joka saa parametrina x- ja y-akselien arvot.
@@ -23,6 +24,7 @@ public class Koordinaatti {
     public Koordinaatti(int y, int x) {
         this.x = x;
         this.y = y;
+        keossa = false;
     }
 
     /**
@@ -48,7 +50,7 @@ public class Koordinaatti {
      *
      * @param maaliin
      */
-    public void setMaaliin(int maaliin) {
+    public void setMaaliin(double maaliin) {
         if (maaliin < 0){
             this.maaliin = 0;
         }
@@ -60,7 +62,7 @@ public class Koordinaatti {
      *
      * @return
      */
-    public int getMaaliin() {
+    public double getMaaliin() {
         return maaliin;
     }
 
@@ -69,7 +71,7 @@ public class Koordinaatti {
      *
      * @param alkuun
      */
-    public void setAlkuun(int alkuun) {
+    public void setAlkuun(double alkuun) {
         if (alkuun < 0){
             this.alkuun = 0;
         }
@@ -81,7 +83,7 @@ public class Koordinaatti {
      *
      * @return
      */
-    public int getAlkuun() {
+    public double getAlkuun() {
         return alkuun;
     }
 
@@ -132,5 +134,13 @@ public class Koordinaatti {
      */
     public char getMerkki(){
         return this.merkki;
+    }
+    
+    public void setKeossa(boolean onko){
+        this.keossa = onko;
+    }
+    
+    public boolean getKeossa(){
+        return keossa;
     }
 }

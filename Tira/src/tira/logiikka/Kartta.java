@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package logiikka;
+package tira.logiikka;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -34,9 +34,9 @@ public class Kartta {
      * luoKarttaKuvasta()
      * @param tiedosto
      */
-    public Kartta(String tiedosto) {
+    public Kartta(File tiedosto) {
         try {
-            kuva = ImageIO.read(new File(tiedosto));
+            kuva = ImageIO.read(tiedosto);
             kartta = new Koordinaatti[kuva.getHeight()][kuva.getWidth()];
             leveys = kuva.getWidth();
             korkeus = kuva.getHeight();
@@ -144,5 +144,22 @@ public class Kartta {
      */
     public Koordinaatti getKoordinaatti(int y, int x) {
         return kartta[y][x];
+    }
+
+    public boolean onSeina(int y, int x) {
+        return kartta[y][x].getMerkki() == '#';
+    }
+    
+    public BufferedImage getKuva(){
+        return this.kuva;
+    }
+
+    boolean onkoValidi() {
+        if (this.maali != null){
+            if (this.lahto != null){
+                return true;
+            }
+        }
+        return false;
     }
 }

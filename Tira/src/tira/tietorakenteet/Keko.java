@@ -1,6 +1,7 @@
-package logiikka;
+package tira.tietorakenteet;
 
 import java.util.Comparator;
+import tira.logiikka.Koordinaatti;
 
 /**
  * Oma toteutus keosta, joka saa parametrina Comparator-luokan ilmentymän, jonka
@@ -77,7 +78,7 @@ public class Keko {
         int l = leftChild(i);
         int pienin = 1;
         if (r <= size) {
-            if (comparator.compare(keko[l], keko[r]) <= 0) {
+            if (comparator.compare(keko[l], keko[r]) < 0) {
                 pienin = l;
             } else {
                 pienin = r;
@@ -86,7 +87,7 @@ public class Keko {
                 swap(i, pienin);
                 heapify(pienin);
             }
-        } else if (l == size && comparator.compare(keko[i], keko[l]) > 0) {
+        } if (l == size && comparator.compare(keko[i], keko[l]) > 0) {
             swap(i, l);
         }
     }
@@ -98,7 +99,7 @@ public class Keko {
      * niin tuplaa taulukon koon kutsumalla kasvataKokoa()-metodia.
      * @param node
      */
-    public void insert(Koordinaatti node) {
+    public void add(Koordinaatti node) {
         size++;
         if (size >= keko.length) {
             kasvataKokoa();

@@ -1,26 +1,32 @@
-package logiikka;
+package tira.algoritmit;
 
+import tira.tietorakenteet.AstarKoordinaattiComparator;
+import tira.tietorakenteet.Keko;
 import java.util.PriorityQueue;
+import tira.logiikka.Kartta;
+import tira.logiikka.Koordinaatti;
+import tira.tietorakenteet.Reitti;
 
 /**
  *
  * @author Ari
  */
-public class Astar {
+public class Astar implements Hakualgoritmi {
 
     private Kartta kartta;
     private Koordinaatti lahto;
     private Koordinaatti maali;
+    private Keko keko;
+    private Timer timer;
 
     /**
      * Luokan konstruktori, saa parametrinaan luokan käytämän kartan
      *
      * @param kartta
      */
-    public Astar(Kartta kartta) {
-        this.kartta = kartta;
-        this.lahto = kartta.getLahto();
-        this.maali = kartta.getMaali();
+    public Astar() {
+         timer = new Timer();
+        
     }
 
     /**
@@ -29,26 +35,32 @@ public class Astar {
      *
      * @return
      */
-    public Reitti findPath() {
-        Keko keko = new Keko(new AstarKoordinaattiComparator());
+    @Override
+    public Reitti findPath(Kartta kartta) {
+        this.kartta = kartta;
+        this.lahto = kartta.getLahto();
+        this.maali = kartta.getMaali();
+        this.timer.start();
+        //Keko keko = new Keko(new AstarKoordinaattiComparator());
+        keko = new Keko(new AstarKoordinaattiComparator());
         Reitti reitti = new Reitti();
         relaxAll();
-        keko.insert(lahto);
+        keko.add(lahto);
 
         while (!maali.getKayty() && !keko.isEmpty()) {
             Koordinaatti kasiteltava = keko.poll();
-            if (kasiteltava.getKayty()){
+            if (kasiteltava.getKayty() || kasiteltava.getKeossa()) {
                 continue;
             }
             kasiteltava.setKayty(true);
 
-            lisaaNaapuritKekoon(kasiteltava, keko);
+            lisaaNaapuritKekoon(kasiteltava);
         }
         if (maali.getKayty()) {
 
             tulostaReitti(maali, reitti);
         }
-
+        this.timer.stop();
         return reitti;
     }
 
@@ -59,17 +71,17 @@ public class Astar {
      * @param kasiteltava
      * @param keko
      */
-    public void lisaaNaapuritKekoon(Koordinaatti kasiteltava,
-            Keko keko) {
+    public void lisaaNaapuritKekoon(Koordinaatti kasiteltava) {
 
-        asetaNaapurinEtaisyydet(kasiteltava.getY() + 1, kasiteltava.getX(), keko, kasiteltava);
-        asetaNaapurinEtaisyydet(kasiteltava.getY() - 1, kasiteltava.getX(), keko, kasiteltava);
-        asetaNaapurinEtaisyydet(kasiteltava.getY(), kasiteltava.getX() + 1, keko, kasiteltava);
-        asetaNaapurinEtaisyydet(kasiteltava.getY(), kasiteltava.getX() - 1, keko, kasiteltava);
-        asetaNaapurinEtaisyydet(kasiteltava.getY() - 1, kasiteltava.getX() - 1, keko, kasiteltava);
-        asetaNaapurinEtaisyydet(kasiteltava.getY() + 1, kasiteltava.getX() + 1, keko, kasiteltava);
-        asetaNaapurinEtaisyydet(kasiteltava.getY() + 1, kasiteltava.getX() - 1, keko, kasiteltava);
-        asetaNaapurinEtaisyydet(kasiteltava.getY() - 1, kasiteltava.getX() + 1, keko, kasiteltava);
+        asetaNaapurinEtaisyydet(kasiteltava.getY() - 1, kasiteltava.getX(), kasiteltava);
+        asetaNaapurinEtaisyydet(kasiteltava.getY() + 1, kasiteltava.getX(), kasiteltava);
+        asetaNaapurinEtaisyydet(kasiteltava.getY(), kasiteltava.getX() - 1, kasiteltava);
+        asetaNaapurinEtaisyydet(kasiteltava.getY(), kasiteltava.getX() + 1, kasiteltava);
+        asetaNaapurinEtaisyydet(kasiteltava.getY() + 1, kasiteltava.getX() + 1, kasiteltava);
+        asetaNaapurinEtaisyydet(kasiteltava.getY() - 1, kasiteltava.getX() - 1, kasiteltava);
+        asetaNaapurinEtaisyydet(kasiteltava.getY() - 1, kasiteltava.getX() + 1, kasiteltava);
+        asetaNaapurinEtaisyydet(kasiteltava.getY() + 1, kasiteltava.getX() - 1, kasiteltava);
+
 
     }
     /*
@@ -80,7 +92,7 @@ public class Astar {
      */
 
     private void asetaNaapurinEtaisyydet(int naapurinY, int naapurinX,
-            Keko keko, Koordinaatti kasiteltava) {
+            Koordinaatti kasiteltava) {
         if (naapurinX >= kartta.getLeveys() || naapurinY >= kartta.getKorkeus()
                 || naapurinX < 0 || naapurinY < 0) {
             return;
@@ -91,7 +103,7 @@ public class Astar {
             asetaEtaisyysAlkuun(naapuri, kasiteltava);
             asetaEtaisyysMaaliin(naapuri);
             if (!naapuri.getKayty()) {
-                keko.insert(naapuri);
+                keko.add(naapuri);
             }
         }
 
@@ -105,7 +117,8 @@ public class Astar {
                 Math.abs(naapuri.getX() - maali.getX()));
         int pienempi = Math.min(Math.abs(naapuri.getY() - maali.getY()),
                 Math.abs(naapuri.getX() - maali.getX()));
-        int etaisyys = pienempi + (suurempi - pienempi);
+        double diagonaali = Math.sqrt(2) * (suurempi - pienempi);
+        double etaisyys = pienempi +  diagonaali;
         naapuri.setMaaliin(etaisyys);
     }
     /*
@@ -114,8 +127,15 @@ public class Astar {
 
     private void asetaEtaisyysAlkuun(Koordinaatti naapuri,
             Koordinaatti kasiteltava) {
-        int matkaAlkuun = kasiteltava.getAlkuun() + 1;
-        if (naapuri.getAlkuun() > matkaAlkuun) { // oletuksena vielä tässä vaiheessa, että kaikki siirtymät "maksaa yhden".
+        double matkaAlkuun = kasiteltava.getAlkuun();
+        if (naapuri.getX() == kasiteltava.getX()
+                || naapuri.getY() == kasiteltava.getY()) {
+            matkaAlkuun += 1;
+        } else {
+            matkaAlkuun += Math.sqrt(2);
+        }
+
+        if (naapuri.getAlkuun() > matkaAlkuun) {
             naapuri.setAlkuun(matkaAlkuun);
             naapuri.setEdellinen(kasiteltava);
         }
@@ -132,6 +152,7 @@ public class Astar {
             for (int j = 0; j < kartta.getLeveys(); j++) {
                 kartta.getKoordinaatti(i, j).setAlkuun(Integer.MAX_VALUE);
                 kartta.getKoordinaatti(i, j).setKayty(false);
+                kartta.getKoordinaatti(i, j).setKeossa(false);
             }
         }
         lahto.setAlkuun(0);
@@ -147,11 +168,16 @@ public class Astar {
         reitti.lisaaNode(node);
         //System.out.println("Y: " + node.getY() + " X: " + node.getX());
     }
-   
+
     /*
      * tarkistaa onko parametrina saadussa koordinaatissa seinä ('#').
      */
     private boolean onkoSeina(Koordinaatti node) {
         return node.getMerkki() == '#';
+    }
+
+    @Override
+    public long suoritusaika() {
+        return this.timer.time();
     }
 }

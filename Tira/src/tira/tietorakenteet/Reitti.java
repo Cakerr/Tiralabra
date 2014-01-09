@@ -1,4 +1,6 @@
-package logiikka;
+package tira.tietorakenteet;
+
+import tira.logiikka.Koordinaatti;
 
 /**
  *

@@ -4,6 +4,10 @@
  */
 package logiikka;
 
+import java.io.File;
+import tira.logiikka.Koordinaatti;
+import tira.logiikka.Kartta;
+import tira.algoritmit.Astar;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -45,8 +49,8 @@ public class AstarTest {
         }
         kartta1 = new Kartta(taulukko);
         taulukkoKartta1 = kartta1.getKartta();
-        astar = new Astar(kartta1);
-        kartta2 = new Kartta("EiRatkaisua.png");
+        astar = new Astar();
+        kartta2 = new Kartta(new File("EiRatkaisua.png"));
     }
 
     @After
@@ -70,7 +74,7 @@ public class AstarTest {
     
     @Test
     public void palauttaaTyhjanReitinJosReittiaEiloydy(){
-        astar = new Astar(kartta2);
-        assertEquals(null, astar.findPath().getNext());
+        astar = new Astar();
+        assertEquals(null, astar.findPath(kartta2).getNext());
     }
 }

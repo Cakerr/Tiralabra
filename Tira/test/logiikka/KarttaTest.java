@@ -4,6 +4,8 @@
  */
 package logiikka;
 
+import java.io.File;
+import tira.logiikka.Kartta;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -13,7 +15,7 @@ import static org.junit.Assert.*;
  */
 public class KarttaTest {
 
-    private Kartta kartta1 = new Kartta("EnsimmainenKartta.png");
+    private Kartta kartta1 = new Kartta(new File("EnsimmainenKartta.png"));
     private Kartta kartta2;
     private char[][] charKartta = {
         {'S', ' ', ' ', ' '},
@@ -71,5 +73,5 @@ public class KarttaTest {
                         kartta2.getKoordinaatti(i, j).getMerkki());
             }
         }
-    }
+    }   
 }

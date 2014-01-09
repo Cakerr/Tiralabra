@@ -4,6 +4,9 @@
  */
 package logiikka;
 
+import tira.logiikka.Koordinaatti;
+import tira.tietorakenteet.Keko;
+import tira.tietorakenteet.AstarKoordinaattiComparator;
 import java.util.PriorityQueue;
 import static org.junit.Assert.*;
 import org.junit.*;
@@ -46,14 +49,14 @@ public class KekoTest {
     @Test
     public void insertToimiiYhdellaLisayksella() {
         Koordinaatti x = new Koordinaatti(2, 2);
-        keko.insert(x);
+        keko.add(x);
         assertEquals(1, keko.length());
     }
 
     @Test
     public void pollToimiiYhdellaLisayksella() {
         Koordinaatti x = new Koordinaatti(2, 2);
-        keko.insert(x);
+        keko.add(x);
         assertEquals(x, keko.poll());
         assertEquals(0, keko.length());
         assertTrue(keko.isEmpty());
@@ -62,7 +65,7 @@ public class KekoTest {
     @Test
     public void keonKoonKasvattaminenToimii() {
         for (int i = 0; i < 12; i++) {
-            keko.insert(new Koordinaatti(i, i));
+            keko.add(new Koordinaatti(i, i));
         }
         assertEquals(12, keko.length());
         for (int i = 0; i < 12; i++) {
@@ -79,8 +82,8 @@ public class KekoTest {
         Koordinaatti k2 = new Koordinaatti(3, 3);
         k2.setAlkuun(2);
         k2.setAlkuun(3);
-        keko.insert(k1);
-        keko.insert(k2);
+        keko.add(k1);
+        keko.add(k2);
 
         assertEquals(k2, keko.poll());
         assertEquals(k1, keko.poll());
@@ -94,8 +97,8 @@ public class KekoTest {
         Koordinaatti k2 = new Koordinaatti(3, 3);
         k2.setAlkuun(2);
         k2.setAlkuun(3);
-        keko.insert(k2);
-        keko.insert(k1);
+        keko.add(k2);
+        keko.add(k1);
 
         assertEquals(k2, keko.poll());
         assertEquals(k1, keko.poll());
@@ -117,10 +120,10 @@ public class KekoTest {
         g.setAlkuun(3);
         g.setMaaliin(3);
         
-        keko.insert(x);
-        keko.insert(z);
-        keko.insert(y);
-        keko.insert(g);
+        keko.add(x);
+        keko.add(z);
+        keko.add(y);
+        keko.add(g);
         
         assertEquals(x, keko.poll());
         assertEquals(y, keko.poll());
@@ -143,10 +146,10 @@ public class KekoTest {
         g.setAlkuun(3);
         g.setMaaliin(3);
         
-        keko.insert(x);
-        keko.insert(y);
-        keko.insert(z);
-        keko.insert(g);
+        keko.add(x);
+        keko.add(y);
+        keko.add(z);
+        keko.add(g);
         
         assertEquals(x, keko.poll());
         assertEquals(y, keko.poll());
@@ -165,21 +168,21 @@ public class KekoTest {
 
         for (int i = 0; i < 200; i++) {
             if (i == 12) {
-                keko.insert(y);
+                keko.add(y);
             } else if (i == 177) {
-                keko.insert(x);
+                keko.add(x);
             }
             Koordinaatti z = new Koordinaatti(i, i);
             z.setAlkuun(i);
             z.setMaaliin(i + 1);
-            keko.insert(z);
+            keko.add(z);
         }
         assertEquals(x, keko.poll());
         keko.poll();
         assertEquals(y, keko.poll());
         //assertEquals(y, keko.poll());
     }
-
+/*
     @Test
     public void palauttaaAlkiotSamassaJärjestyksessäKuinJavanToteutus() {
         PriorityQueue<Koordinaatti> java = new PriorityQueue<>(1, compa);
@@ -189,7 +192,7 @@ public class KekoTest {
             z.setAlkuun(i % 9);
             z.setMaaliin(i % 5);
             java.add(z);
-            keko.insert(z);
+            keko.add(z);
         }
         for (int i = 0; i < 20000; i++){
             Koordinaatti javan = java.poll();
@@ -199,7 +202,7 @@ public class KekoTest {
         }
 
     }
-
+*/
     @Test
     public void insertSuhdeJavanPriorityQueueToteutukseenonAlle2() {
         PriorityQueue java = new PriorityQueue<>(8, compa);
@@ -220,7 +223,7 @@ public class KekoTest {
             Koordinaatti z = new Koordinaatti(i, i);
             z.setAlkuun(i % 9);
             z.setMaaliin(i % 5);
-            oma.insert(z);
+            oma.add(z);
         }
         long omaLoppu = System.currentTimeMillis();
         double omaAika = omaLoppu - omaAlku;
@@ -238,7 +241,7 @@ public class KekoTest {
             z.setAlkuun(i % 9);
             z.setMaaliin(i % 5);
             java.add(z);
-            oma.insert(z);
+            oma.add(z);
         }
         long javaAlku = System.currentTimeMillis();
         for (int i = 0; i < 600000; i++){

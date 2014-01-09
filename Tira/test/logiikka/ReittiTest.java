@@ -4,6 +4,8 @@
  */
 package logiikka;
 
+import tira.tietorakenteet.Reitti;
+import tira.logiikka.Koordinaatti;
 import org.junit.*;
 import static org.junit.Assert.*;
 
