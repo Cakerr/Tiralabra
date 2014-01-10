@@ -162,4 +162,15 @@ public class Kartta {
         }
         return false;
     }
+    
+    public boolean onkoMaali(int y, int x){
+        return kartta[y][x] == maali;
+    }
+    
+    public boolean voikoKulkea(int y, int x){
+        if (y >= korkeus || x >= leveys || onSeina(y, x)){
+            return false;
+        }
+        return true;
+    }
 }

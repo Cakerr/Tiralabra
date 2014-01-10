@@ -23,7 +23,7 @@ public class Solver implements Runnable{
     private Karttaruutu view;
 
     public Solver()  {   
-        setAlgoritmi(new Astar());
+        algo = new Astar();
         this.kartta = new Kartta(new File("EiRatkaisua.png"));
        
     }

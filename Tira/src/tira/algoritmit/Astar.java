@@ -1,9 +1,5 @@
 package tira.algoritmit;
 
-import tira.tietorakenteet.AstarKoordinaattiComparator;
-import tira.tietorakenteet.Keko;
-import java.util.PriorityQueue;
-import tira.logiikka.Kartta;
 import tira.logiikka.Koordinaatti;
 import tira.tietorakenteet.Reitti;
 
@@ -11,13 +7,7 @@ import tira.tietorakenteet.Reitti;
  *
  * @author Ari
  */
-public class Astar implements Hakualgoritmi {
-
-    private Kartta kartta;
-    private Koordinaatti lahto;
-    private Koordinaatti maali;
-    private Keko keko;
-    private Timer timer;
+public class Astar extends Hakualgoritmi {
 
     /**
      * Luokan konstruktori, saa parametrinaan luokan käytämän kartan
@@ -25,43 +15,7 @@ public class Astar implements Hakualgoritmi {
      * @param kartta
      */
     public Astar() {
-         timer = new Timer();
-        
-    }
-
-    /**
-     * Etsii kartasta lyhimmän reitin lahto-solmusta maali-solmuun, ja palauttaa
-     * sen Reitti-oliona.
-     *
-     * @return
-     */
-    @Override
-    public Reitti findPath(Kartta kartta) {
-        this.kartta = kartta;
-        this.lahto = kartta.getLahto();
-        this.maali = kartta.getMaali();
-        this.timer.start();
-        //Keko keko = new Keko(new AstarKoordinaattiComparator());
-        keko = new Keko(new AstarKoordinaattiComparator());
-        Reitti reitti = new Reitti();
-        relaxAll();
-        keko.add(lahto);
-
-        while (!maali.getKayty() && !keko.isEmpty()) {
-            Koordinaatti kasiteltava = keko.poll();
-            if (kasiteltava.getKayty() || kasiteltava.getKeossa()) {
-                continue;
-            }
-            kasiteltava.setKayty(true);
-
-            lisaaNaapuritKekoon(kasiteltava);
-        }
-        if (maali.getKayty()) {
-
-            tulostaReitti(maali, reitti);
-        }
-        this.timer.stop();
-        return reitti;
+        super();
     }
 
     /**
@@ -71,7 +25,8 @@ public class Astar implements Hakualgoritmi {
      * @param kasiteltava
      * @param keko
      */
-    public void lisaaNaapuritKekoon(Koordinaatti kasiteltava) {
+    @Override
+    protected void lisaaSeuraajatKekoon(Koordinaatti kasiteltava) {
 
         asetaNaapurinEtaisyydet(kasiteltava.getY() - 1, kasiteltava.getX(), kasiteltava);
         asetaNaapurinEtaisyydet(kasiteltava.getY() + 1, kasiteltava.getX(), kasiteltava);
@@ -93,17 +48,17 @@ public class Astar implements Hakualgoritmi {
 
     private void asetaNaapurinEtaisyydet(int naapurinY, int naapurinX,
             Koordinaatti kasiteltava) {
-        if (naapurinX >= kartta.getLeveys() || naapurinY >= kartta.getKorkeus()
+        if (naapurinX >= super.getKartta().getLeveys() || naapurinY >= super.getKartta().getKorkeus()
                 || naapurinX < 0 || naapurinY < 0) {
             return;
         }
 
-        Koordinaatti naapuri = kartta.getKoordinaatti(naapurinY, naapurinX);
-        if (!onkoSeina(naapuri)) {
+        Koordinaatti naapuri = super.getKartta().getKoordinaatti(naapurinY, naapurinX);
+        if (!super.onkoSeina(naapuri)) {
             asetaEtaisyysAlkuun(naapuri, kasiteltava);
             asetaEtaisyysMaaliin(naapuri);
             if (!naapuri.getKayty()) {
-                keko.add(naapuri);
+                super.getKeko().add(naapuri);
             }
         }
 
@@ -113,12 +68,14 @@ public class Astar implements Hakualgoritmi {
      * Laskee parametrina annetun koordinaatin etäisyyden maalisolmuun
      */
     private void asetaEtaisyysMaaliin(Koordinaatti naapuri) {
+        Koordinaatti maali = super.getMaali();
+
         int suurempi = Math.max(Math.abs(naapuri.getY() - maali.getY()),
                 Math.abs(naapuri.getX() - maali.getX()));
         int pienempi = Math.min(Math.abs(naapuri.getY() - maali.getY()),
                 Math.abs(naapuri.getX() - maali.getX()));
         double diagonaali = Math.sqrt(2) * (suurempi - pienempi);
-        double etaisyys = pienempi +  diagonaali;
+        double etaisyys = pienempi + diagonaali;
         naapuri.setMaaliin(etaisyys);
     }
     /*
@@ -147,21 +104,11 @@ public class Astar implements Hakualgoritmi {
      * jokaisen solmun suoran etäisyyden maalisolmusta
      *
      */
-    public void relaxAll() {
-        for (int i = 0; i < kartta.getKorkeus(); i++) {
-            for (int j = 0; j < kartta.getLeveys(); j++) {
-                kartta.getKoordinaatti(i, j).setAlkuun(Integer.MAX_VALUE);
-                kartta.getKoordinaatti(i, j).setKayty(false);
-                kartta.getKoordinaatti(i, j).setKeossa(false);
-            }
-        }
-        lahto.setAlkuun(0);
-    }
     /*
      * Lisää löydetyn reitin koordinaatti-oliot parametrina saatuun reittiin.
      */
-
-    private void tulostaReitti(Koordinaatti node, Reitti reitti) {
+    @Override
+    protected void tulostaReitti(Koordinaatti node, Reitti reitti) {
         if (node.getEdellinen() != null) {
             tulostaReitti(node.getEdellinen(), reitti);
         }
@@ -172,12 +119,4 @@ public class Astar implements Hakualgoritmi {
     /*
      * tarkistaa onko parametrina saadussa koordinaatissa seinä ('#').
      */
-    private boolean onkoSeina(Koordinaatti node) {
-        return node.getMerkki() == '#';
-    }
-
-    @Override
-    public long suoritusaika() {
-        return this.timer.time();
-    }
 }
