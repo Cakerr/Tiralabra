@@ -24,7 +24,7 @@ public class Solver implements Runnable{
 
     public Solver()  {   
         algo = new Astar();
-        this.kartta = new Kartta(new File("EiRatkaisua.png"));
+        this.kartta = new Kartta(new File("testi.png"));
        
     }
 
@@ -73,6 +73,14 @@ public class Solver implements Runnable{
 
     public boolean onSeina(int y, int x) {
         return kartta.onSeina(y, x);
+    }
+    
+    public boolean onKeossa(int y, int x){
+        return kartta.getKoordinaatti(y, x).getKeossa();
+    }
+    
+     public boolean onKayty(int y, int x){
+        return kartta.getKoordinaatti(y, x).getKayty();
     }
 
     public int[] getSeuraava() {

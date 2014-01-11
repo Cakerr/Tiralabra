@@ -58,7 +58,7 @@ public class Karttaruutu extends JFrame {
         etsi.addMouseListener(new AloitusListener(ohjain, this));
         uusiKartta.addMouseListener(new UusiKarttaListener(ohjain));
         lataaKartta.addMouseListener(new KartanLatausListener(ohjain));
-        
+
         asetaKomponentit();
 
     }
@@ -66,7 +66,6 @@ public class Karttaruutu extends JFrame {
     private void asetaKomponentit() {
         tausta.setLayout(new BorderLayout());
         tausta.setSize(1000, 1000);
-
 
         algoritmi.add(astar);
         algoritmi.add(jps);
@@ -86,19 +85,26 @@ public class Karttaruutu extends JFrame {
 
     public void maalaaReitti() {
         onkoReittia();
-        for (int i = 1; i < ohjain.getReitinPituus(); i++) {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Karttaruutu.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            int[] koordinaatti = ohjain.getSeuraava();
-            int y = koordinaatti[0];
-            int x = koordinaatti[1];
-            if (!ohjain.onMaali(y, x) && !ohjain.onLahto(y, x)) {
-                ruudukko.varitaNode(y, x, ruudukko.getGraphics());
+        for (int i = 1; i < ohjain.getKartanKorkeus(); i++) {
+            for (int j = 0; j < ohjain.getKartanLeveys(); j++) {
+                
+                
+               
+                if (ohjain.onKayty(i, j)){
+                    ruudukko.varitaKayty(i, j, ruudukko.getGraphics());
+                }
+                
             }
         }
+        for (int i = 0; i < ohjain.getReitinPituus(); i++){
+            int[] jee = ohjain.getSeuraava();
+            int y = jee[0];
+            int x = jee[1];
+            if (!ohjain.onMaali(y, x) && !ohjain.onLahto(y, x)) {
+                    ruudukko.varitaReitti(y, x, ruudukko.getGraphics());
+                }
+        }
+        
     }
 
     private void onkoReittia() {
@@ -108,7 +114,7 @@ public class Karttaruutu extends JFrame {
     }
 
     public void piirraKartta() {
-        
+
         int korkeus = ohjain.getKartanKorkeus();
         int leveys = ohjain.getKartanLeveys();
         int scale = 0;
@@ -117,8 +123,8 @@ public class Karttaruutu extends JFrame {
                 && leveys * scale <= tausta.getHeight()) {
             scale++;
         }
-        ruudukko.setScale(scale-1);
-        
+        ruudukko.setScale(scale - 1);
+
         ruudukko.paintComponents(ruudukko.getGraphics());
         repaint();
 

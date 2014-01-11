@@ -21,12 +21,9 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        //Solver solveri = new Solver();
-        //solveri.run();
+        Solver solveri = new Solver();
+        solveri.run();
         
-        Hakualgoritmi jee = new JumpPointSearch();
         
-        Reitti reitti = jee.findPath(new Kartta(new File("suora.png")));
-        System.out.println(reitti.length());
     }
 }

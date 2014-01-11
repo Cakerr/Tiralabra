@@ -11,9 +11,9 @@ public class Koordinaatti {
     private Koordinaatti edellinen;
     private double maaliin; // heurrestiikan arvio noden etäisyydestä maaliin.
     private double alkuun;
-    private boolean kayty;
+    private boolean kayty = false;
     private char merkki;
-    private boolean keossa;
+    private boolean keossa = false;
 
     /**
      * Luodaan koordinaatti, joka saa parametrina x- ja y-akselien arvot.

@@ -18,7 +18,12 @@ public class KarttaAlusta extends JPanel {
         
     }
 
-    public void varitaNode(int y, int x, Graphics g ){
+    public void varitaKayty(int y, int x, Graphics g){
+        g.setColor(Color.gray);
+        g.fillRect(x * ruudunKoko+1, y * ruudunKoko+1 , ruudunKoko-1, ruudunKoko-1);
+    }
+    
+    public void varitaReitti(int y, int x, Graphics g ){
         g.setColor(Color.blue);
         if (!ratkaisija.onLahto(y, x) && !ratkaisija.onMaali(y, x)){
             g.fillRect(x * ruudunKoko+1, y * ruudunKoko+1 , ruudunKoko-1, ruudunKoko-1);

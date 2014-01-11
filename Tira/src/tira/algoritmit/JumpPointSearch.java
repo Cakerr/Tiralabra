@@ -21,18 +21,20 @@ public class JumpPointSearch extends Hakualgoritmi {
     @Override
     public void lisaaSeuraajatKekoon(Koordinaatti kasiteltava) {
         Koordinaatti[] naapurit = tunnistaNaapurit(kasiteltava);
-        
+
         for (int i = 0; i < naapurit.length; i++) {
 
             Koordinaatti node = naapurit[i];
             if (node != null) {
+                naapurit[i].setKayty(true);
 
-                int dX = laskeEtaisyys(node.getX(), kasiteltava.getX());
-                int dY = laskeEtaisyys(node.getY(), kasiteltava.getX());
+                int dX = laskeSuunta(kasiteltava.getX(), node.getX());
+                int dY = laskeSuunta(kasiteltava.getX(), node.getY());
 
                 Koordinaatti jumpPoint = jump(kasiteltava.getY(), kasiteltava.getX(), dY, dX);
                 if (jumpPoint != null) {
-                    jumpPoint.setKeossa(true);
+                    System.out.println(jumpPoint.getX() + ", " + jumpPoint.getY());
+                    //jumpPoint.setKeossa(true);
                     jumpPoint.setEdellinen(kasiteltava);
                     getKeko().add(jumpPoint);
                 }
@@ -42,6 +44,10 @@ public class JumpPointSearch extends Hakualgoritmi {
 
     @Override
     public void tulostaReitti(Koordinaatti maali, Reitti reitti) {
+        if (maali.getEdellinen() != null) {
+            tulostaReitti(maali.getEdellinen(), reitti);
+        }
+        reitti.lisaaNode(maali);
     }
 
     private Koordinaatti[] tunnistaNaapurit(Koordinaatti node) {
@@ -49,15 +55,15 @@ public class JumpPointSearch extends Hakualgoritmi {
         int x = node.getX();
         int y = node.getY();
         int i = 0;
+
         Koordinaatti[] naapurit = new Koordinaatti[5];
         if (node.getEdellinen() != null) {
             int pX = node.getEdellinen().getX();
             int pY = node.getEdellinen().getY();
-            int dX = laskeEtaisyys(pX, x);
-            int dY = laskeEtaisyys(pY, y);
+            int dX = laskeSuunta(x, pX);
+            int dY = laskeSuunta(y, pY);
 
-          
-
+            //Diagonaalinen siirtymä
             if (dY != 0 && dX != 0) {
                 if (voikoKulkea(y + dY, x)) {
                     naapurit[i] = getKoordinaatti(y + dY, x);
@@ -82,6 +88,7 @@ public class JumpPointSearch extends Hakualgoritmi {
                     i++;
                 }
             } else {
+                //vaakasiirtymä
                 if (dY == 0) {
                     if (voikoKulkea(y, x + dX) && !voikoKulkea(y - 1, x)) {
                         naapurit[i] = getKoordinaatti(y - 1, x + dX);
@@ -92,6 +99,7 @@ public class JumpPointSearch extends Hakualgoritmi {
                         i++;
                     }
                 }
+                //pystysiirtymä
                 if (dX == 0) {
                     if (voikoKulkea(y + dY, x) && !voikoKulkea(y, x - 1)) {
                         naapurit[i] = getKoordinaatti(y + dY, x - 1);
@@ -114,17 +122,20 @@ public class JumpPointSearch extends Hakualgoritmi {
 
         int nextX = x + dX;
         int nextY = y + dY;
+        
 
-        if (voikoKulkea(nextY, nextX)) {
+        if (!voikoKulkea(nextY, nextX)) {
+            
             return null;
         }
+        
+      
 
         if (super.onkoMaali(nextY, nextX)) {
             return super.getKoordinaatti(nextY, nextX);
         }
         //Diagonaali
-
-
+        
         if (dX != 0 && dY != 0) {
             if ((voikoKulkea(y + 1, x + dX) && !voikoKulkea(y + 1, x))
                     || voikoKulkea(y - 1, x + dX) && !voikoKulkea(y - 1, x)) {
@@ -134,24 +145,27 @@ public class JumpPointSearch extends Hakualgoritmi {
                     || voikoKulkea(y + dY, x - 1) && !voikoKulkea(y, x - 1)) {
                 return getKoordinaatti(nextY, nextX);
             }
-
             if (jump(nextY, nextX, dY, 0) != null
                     || jump(nextY, nextX, 0, dX) != null) {
                 return getKoordinaatti(nextY, nextX);
             }
+            
+
         } else {
+            
             if (dX != 0) {
                 if ((voikoKulkea(y + 1, nextX) && !voikoKulkea(y, nextX))
                         || (voikoKulkea(y - 1, nextX) && !voikoKulkea(y, nextX))) {
                     return getKoordinaatti(nextY, nextX);
-                } else {
-                    if ((voikoKulkea(nextY, x + 1) && !voikoKulkea(nextY, x))
-                            || (voikoKulkea(nextY, x - 1) && !voikoKulkea(nextY, x))) {
-                        return getKoordinaatti(nextY, nextX);
-                    }
+                }
+            } else {
+                if ((voikoKulkea(nextY, x + 1) && !voikoKulkea(nextY, x))
+                        || (voikoKulkea(nextY, x - 1) && !voikoKulkea(nextY, x))) {
+                    return getKoordinaatti(nextY, nextX);
+
                 }
             }
-
+            
             // tarkistaa diagonaalisesti liikuttaessa vertikaaliset ja
             // horisonttaaliset jumppointit.
 
@@ -165,33 +179,41 @@ public class JumpPointSearch extends Hakualgoritmi {
         int i = 0;
         if (voikoKulkea(y + 1, x)) {
             naapurit[i] = getKoordinaatti(y + 1, x);
+            i++;
         }
         if (voikoKulkea(y + 1, x + 1)) {
-            naapurit[i] = getKoordinaatti(y + 1, x);
+            naapurit[i] = getKoordinaatti(y + 1, x + 1);
+            i++;
         }
         if (voikoKulkea(y + 1, x - 1)) {
-            naapurit[i] = getKoordinaatti(y + 1, x);
+            naapurit[i] = getKoordinaatti(y + 1, x - 1);
+            i++;
         }
         if (voikoKulkea(y - 1, x)) {
-            naapurit[i] = getKoordinaatti(y + 1, x);
+            naapurit[i] = getKoordinaatti(y - 1, x);
+            i++;
         }
         if (voikoKulkea(y - 1, x + 1)) {
-            naapurit[i] = getKoordinaatti(y + 1, x);
+            naapurit[i] = getKoordinaatti(y - 1, x + 1);
+            i++;
         }
         if (voikoKulkea(y - 1, x - 1)) {
-            naapurit[i] = getKoordinaatti(y + 1, x);
+            naapurit[i] = getKoordinaatti(y - 1, x - 1);
+            i++;
         }
         if (voikoKulkea(y, x - 1)) {
-            naapurit[i] = getKoordinaatti(y + 1, x);
+            naapurit[i] = getKoordinaatti(y, x - 1);
+            i++;
         }
         if (voikoKulkea(y, x + 1)) {
-            naapurit[i] = getKoordinaatti(y + 1, x);
+            naapurit[i] = getKoordinaatti(y, x + 1);
+            i++;
         }
 
         return naapurit;
     }
 
-    private int laskeEtaisyys(int pX, int cX) {
+    private int laskeSuunta(int pX, int cX) {
         int dX = cX - pX;
         if (dX > 0) {
             return 1;

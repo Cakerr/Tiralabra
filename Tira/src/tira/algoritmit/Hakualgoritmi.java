@@ -55,7 +55,7 @@ public abstract class Hakualgoritmi {
                 continue;
             }
             kasiteltava.setKayty(true);
-
+            
             lisaaSeuraajatKekoon(kasiteltava);
         }
         if (maali.getKayty()) {

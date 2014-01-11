@@ -27,11 +27,11 @@ public class Kartta {
     private int leveys;
 
     /**
-     * Konstruktori joka saa parametrina tiedoston nimen, josta kuva
-     * yritetään hakea.
-     * Jos tiedosto löytyy niin alustetaan kartta kuvan kokoiseksi,
+     * Konstruktori joka saa parametrina tiedoston nimen, josta kuva yritetään
+     * hakea. Jos tiedosto löytyy niin alustetaan kartta kuvan kokoiseksi,
      * alustetaan luokkamuuttujat leveys ja korkeus ja kutsutaan metodia
      * luoKarttaKuvasta()
+     *
      * @param tiedosto
      */
     public Kartta(File tiedosto) {
@@ -47,10 +47,10 @@ public class Kartta {
     }
 
     /**
-     * Konstruktori, joka saa parametrina char taulukon, josta luodaan
-     * karttana käytetty Koordinaatti-taulukko.
-     * Alustetaan muuttujat korkeus ja leveys parametrina saadun taulukon
-     * mukaisesti.
+     * Konstruktori, joka saa parametrina char taulukon, josta luodaan karttana
+     * käytetty Koordinaatti-taulukko. Alustetaan muuttujat korkeus ja leveys
+     * parametrina saadun taulukon mukaisesti.
+     *
      * @param taulukko
      */
     public Kartta(char[][] taulukko) {
@@ -98,6 +98,7 @@ public class Kartta {
 
     /**
      * Palauttaa Koordinaatti-taulukon.
+     *
      * @return
      */
     public Koordinaatti[][] getKartta() {
@@ -106,6 +107,7 @@ public class Kartta {
 
     /**
      * Palauttaa kartan olevan maalisolmun.
+     *
      * @return
      */
     public Koordinaatti getMaali() {
@@ -114,6 +116,7 @@ public class Kartta {
 
     /**
      * Palauttaa kartan lähtösolmun
+     *
      * @return
      */
     public Koordinaatti getLahto() {
@@ -122,6 +125,7 @@ public class Kartta {
 
     /**
      * Palauttaa kartan korkeuden
+     *
      * @return
      */
     public int getKorkeus() {
@@ -130,6 +134,7 @@ public class Kartta {
 
     /**
      * Palauttaa kartan leveyden
+     *
      * @return
      */
     public int getLeveys() {
@@ -138,6 +143,7 @@ public class Kartta {
 
     /**
      * Palauttaa kartassa sijainnissa (y,x) olevan Koordinaatti-olion.
+     *
      * @param y
      * @param x
      * @return
@@ -149,26 +155,26 @@ public class Kartta {
     public boolean onSeina(int y, int x) {
         return kartta[y][x].getMerkki() == '#';
     }
-    
-    public BufferedImage getKuva(){
+
+    public BufferedImage getKuva() {
         return this.kuva;
     }
 
     boolean onkoValidi() {
-        if (this.maali != null){
-            if (this.lahto != null){
+        if (this.maali != null) {
+            if (this.lahto != null) {
                 return true;
             }
         }
         return false;
     }
-    
-    public boolean onkoMaali(int y, int x){
+
+    public boolean onkoMaali(int y, int x) {
         return kartta[y][x] == maali;
     }
-    
-    public boolean voikoKulkea(int y, int x){
-        if (y >= korkeus || x >= leveys || onSeina(y, x)){
+
+    public boolean voikoKulkea(int y, int x) {
+        if (y >= korkeus || x >= leveys || y < 0 || x < 0 || onSeina(y, x)) {
             return false;
         }
         return true;
