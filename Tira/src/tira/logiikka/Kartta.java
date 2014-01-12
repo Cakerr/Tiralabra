@@ -153,18 +153,18 @@ public class Kartta {
     }
 
     /**
-     * 
-     * @param y
-     * @param x
-     * @return
+     * Palauttaa true, jos koordinaatissa (y,x) on seinä.
+     * @param y y-akselin arvo
+     * @param x x-akselin arvo
+     * @return true, jos koordinaatissa (y,x) on seinä, muuten false
      */
     public boolean onSeina(int y, int x) {
         return kartta[y][x].getMerkki() == '#';
     }
 
     /**
-     * 
-     * @return
+     * Palauttaa kartan muodostamisessa käytetyn bufferedimagen
+     * @return kuva
      */
     public BufferedImage getKuva() {
         return this.kuva;
@@ -180,10 +180,10 @@ public class Kartta {
     }
 
     /**
-     * 
-     * @param y
-     * @param x
-     * @return
+     * Palauttaa true, jos (y,x) on maalisolmu
+     * @param y y-akselin arvo
+     * @param x x-akselin arvo
+     * @return true jos (y,x) on maalisolmu, muuten false
      */
     public boolean onkoMaali(int y, int x) {
         if (y >= korkeus || x >= leveys ||y < 0 || x < 0){
@@ -193,10 +193,11 @@ public class Kartta {
     }
 
     /**
-     * 
-     * @param y
-     * @param x
-     * @return
+     * Palauttaa true, jos koordinaatti (y,x) ei ole seinä eikä ole 
+     * kartan ulkopuolella
+     * @param y y-akselin arvo
+     * @param x x-akselin arvo
+     * @return true jos (y,x)-koordinaatissa voi kulkea, muuten false
      */
     public boolean voikoKulkea(int y, int x) {
         if (y >= korkeus || x >= leveys || y < 0 || x < 0 || onSeina(y, x)) {

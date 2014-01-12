@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -17,6 +17,7 @@ public class KarttaTest {
 
     private Kartta kartta1 = new Kartta(new File("EnsimmainenKartta.png"));
     private Kartta kartta2;
+    private Kartta kartta3;
     private char[][] charKartta = {
         {'S', ' ', ' ', ' '},
         {' ', ' ', '#', ' '},
@@ -36,7 +37,7 @@ public class KarttaTest {
 
     @Before
     public void setUp() {
-
+        kartta3  = new Kartta(charKartta);
     }
 
     @After
@@ -73,5 +74,30 @@ public class KarttaTest {
                         kartta2.getKoordinaatti(i, j).getMerkki());
             }
         }
-    }   
+    }
+    
+    @Test
+    public void voikoKulkeaPalauttaaFalsekunYNegatiivinen(){
+        assertEquals(false, kartta3.voikoKulkea(-1, 1));
+    }
+    
+    @Test
+    public void voikoKulkeaPalauttaaFalsekunXNegatiivinen(){
+        assertEquals(false, kartta3.voikoKulkea(1, -1));
+    }
+    
+    @Test
+    public void voikoKulkeaPalauttaaFalsekunYLiianSuuri(){
+        assertEquals(false, kartta3.voikoKulkea(kartta3.getKorkeus(), 1));
+    }
+    
+    @Test
+    public void voikoKulkeaPalauttaaFalsekunXLiianSuuri(){
+        assertEquals(false, kartta3.voikoKulkea(kartta3.getLeveys(), 1));
+    }
+    
+    @Test
+    public void voikoKulkeaPalauttaaFalsekunKoordinaatissaSeina(){
+        assertEquals(false, kartta3.voikoKulkea(9, 6));
+    }
 }

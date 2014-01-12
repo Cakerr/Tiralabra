@@ -28,34 +28,19 @@ public class JumpPointSearch extends Hakualgoritmi {
     @Override
     public void lisaaSeuraajatKekoon(Koordinaatti kasiteltava) {
         Koordinaatti[] naapurit = tunnistaNaapurit(kasiteltava);
-
-
-       
-
-
         for (int i = 0; i < naapurit.length; i++) {
-
             Koordinaatti naapuri = naapurit[i];
             if (naapuri != null && !naapuri.getKayty()) {
-
                 int dX;
                 int dY;
-                naapurit[i].setKayty(true);
-
-
                 dX = laskeSuunta(kasiteltava.getX(), naapuri.getX());
                 dY = laskeSuunta(kasiteltava.getY(), naapuri.getY());
 
-
-
                 Koordinaatti jumpPoint = jump(kasiteltava.getY(), kasiteltava.getX(), dY, dX);
                 if (jumpPoint != null) {
-                    System.out.println(jumpPoint.getY() + " " + jumpPoint.getX());
+                    asetaEtaisyysMaaliin(jumpPoint);
                     asetaEtaisyysAlkuun(jumpPoint, kasiteltava);
-                    jumpPoint.setKeossa(true);
-                    jumpPoint.setEdellinen(kasiteltava);
-                    getKeko().add(jumpPoint);
-                }
+                }     
             }
         }
     }
@@ -72,13 +57,11 @@ public class JumpPointSearch extends Hakualgoritmi {
         }
 
         if (onkoMaali(nextY, nextX)) {
-
             return getKoordinaatti(nextY, nextX);
         }
         //Diagonaali
 
         if (dX != 0 && dY != 0) {
-
 
             if ((voikoKulkea(nextY - dY, nextX + dX) && !voikoKulkea(nextY - dY, nextX))) {
                 return getKoordinaatti(nextY, nextX);
@@ -114,7 +97,6 @@ public class JumpPointSearch extends Hakualgoritmi {
 
         } //Vertikaalinen
         return jump(nextY, nextX, dY, dX);
-
     }
 
     private Koordinaatti[] tunnistaNaapurit(Koordinaatti node) {
@@ -224,8 +206,8 @@ public class JumpPointSearch extends Hakualgoritmi {
             naapurit[i] = getKoordinaatti(y, x + 1);
             i++;
         }
-        if (voikoKulkea(y - 1, x)) {
-            naapurit[i] = getKoordinaatti(y - 1, x);
+        if (voikoKulkea(y + 1, x)) {
+            naapurit[i] = getKoordinaatti(y + 1, x);
             i++;
         }
 
@@ -246,7 +228,6 @@ public class JumpPointSearch extends Hakualgoritmi {
     public void tulostaReitti(Koordinaatti maali, Reitti reitti) {
         if (maali.getEdellinen() != null) {
             tulostaReitti(maali.getEdellinen(), reitti);
-
         }
         reitti.lisaaNode(maali);
     }

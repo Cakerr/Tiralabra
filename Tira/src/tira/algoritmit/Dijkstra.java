@@ -4,13 +4,13 @@ import tira.logiikka.Koordinaatti;
 import tira.tietorakenteet.Reitti;
 
 /**
- * 
+ *
  * @author Ari
  */
 public class Dijkstra extends Hakualgoritmi {
 
     /**
-     * 
+     *
      * @param maali
      * @param reitti
      */
@@ -23,22 +23,24 @@ public class Dijkstra extends Hakualgoritmi {
     }
 
     /**
-     * 
+     * Apumetodi findPath:lle, joka lisää kaikki käsiteltävänä olevan solmun
+     * naapurit kekoon ja kutsuu asetaNaapurinEtaisyydet-metodia.
+     *
      * @param kasiteltava
      */
     @Override
     protected void lisaaSeuraajatKekoon(Koordinaatti kasiteltava) {
 
-        asetaKekoon(kasiteltava.getY() + 1, kasiteltava.getX() + 1, kasiteltava);
-        asetaKekoon(kasiteltava.getY() - 1, kasiteltava.getX() - 1, kasiteltava);
-        asetaKekoon(kasiteltava.getY() - 1, kasiteltava.getX() + 1, kasiteltava);
-        asetaKekoon(kasiteltava.getY() + 1, kasiteltava.getX() - 1, kasiteltava);
+
         asetaKekoon(kasiteltava.getY() - 1, kasiteltava.getX(), kasiteltava);
         asetaKekoon(kasiteltava.getY() + 1, kasiteltava.getX(), kasiteltava);
         asetaKekoon(kasiteltava.getY(), kasiteltava.getX() - 1, kasiteltava);
         asetaKekoon(kasiteltava.getY(), kasiteltava.getX() + 1, kasiteltava);
 
-
+        asetaKekoon(kasiteltava.getY() + 1, kasiteltava.getX() + 1, kasiteltava);
+        asetaKekoon(kasiteltava.getY() - 1, kasiteltava.getX() - 1, kasiteltava);
+        asetaKekoon(kasiteltava.getY() - 1, kasiteltava.getX() + 1, kasiteltava);
+        asetaKekoon(kasiteltava.getY() + 1, kasiteltava.getX() - 1, kasiteltava);
 
     }
 
@@ -54,7 +56,7 @@ public class Dijkstra extends Hakualgoritmi {
 
         asetaEtaisyysAlkuun(naapuri, kasiteltava);
         naapuri.setMaaliin(0);
-        
+
         getKeko().add(naapuri);
     }
 }

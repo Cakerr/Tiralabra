@@ -4,8 +4,6 @@ import actionlisteners.AloitusListener;
 import actionlisteners.KartanLatausListener;
 import actionlisteners.UusiKarttaListener;
 import java.awt.BorderLayout;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import tira.logiikka.Solver;
 
@@ -103,24 +101,24 @@ public class Karttaruutu extends JFrame {
      */
     public void maalaaReitti() {
         ruudukko.paintComponent(ruudukko.getGraphics());
-        onkoReittia();
-        //if (onkoReittia()) {
-//            for (int i = 1; i < ohjain.getKartanKorkeus(); i++) {
-//                for (int j = 0; j < ohjain.getKartanLeveys(); j++) {
-//                    if (ohjain.onKayty(i, j)) {
-//                        ruudukko.varitaKayty(i, j, ruudukko.getGraphics());
-//                    }
-//
-//                }
-//            }
-            for (int i = 0; i < ohjain.getReitinPituus(); i++) {
-                int[] jee = ohjain.getSeuraava();
-                int y = jee[0];
-                int x = jee[1];
-                if (!ohjain.onMaali(y, x) && !ohjain.onLahto(y, x)) {
-                    ruudukko.varitaReitti(y, x, ruudukko.getGraphics());
+        //onkoReittia();
+        if (onkoReittia()) {
+            for (int i = 1; i < ohjain.getKartanKorkeus(); i++) {
+                for (int j = 0; j < ohjain.getKartanLeveys(); j++) {
+                    if (ohjain.onKayty(i, j)) {
+                        ruudukko.varitaKayty(i, j, ruudukko.getGraphics());
+                    }
+
                 }
-            //}
+            }
+        for (int i = 0; i < ohjain.getReitinPituus(); i++) {
+            int[] jee = ohjain.getSeuraava();
+            int y = jee[0];
+            int x = jee[1];
+            if (!ohjain.onMaali(y, x) && !ohjain.onLahto(y, x)) {
+                ruudukko.varitaReitti(y, x, ruudukko.getGraphics());
+            }
+            }
         }
     }
 

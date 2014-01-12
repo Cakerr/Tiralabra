@@ -19,20 +19,20 @@ public class Timer {
     }
     
     /**
-     * 
+     * Käynnistää kellon
      */
     public void start(){
         start = System.currentTimeMillis();
     }
     /**
-     * 
+     * Pysäyttää kellon
      */
     public void stop(){
         end = System.currentTimeMillis();
     }
     
     /**
-     * 
+     * palauttaa timerin ajan
      * @return
      */
     public long time(){
@@ -40,7 +40,7 @@ public class Timer {
     }
     
     /**
-     * 
+     * Asettaa start ja end arvot nollaan
      */
     public void reset(){
         start = 0;

@@ -10,7 +10,7 @@ import tira.tietorakenteet.Reitti;
 public class Astar extends Hakualgoritmi {
 
     /**
-     * Luokan konstruktori, saa parametrinaan luokan käytämän kartan
+     * Luokan konstruktori
      *
      */
     public Astar() {
@@ -26,15 +26,15 @@ public class Astar extends Hakualgoritmi {
     @Override
     protected void lisaaSeuraajatKekoon(Koordinaatti kasiteltava) {
 
-        asetaNaapurinEtaisyydet(kasiteltava.getY() + 1, kasiteltava.getX() + 1, kasiteltava);
-        asetaNaapurinEtaisyydet(kasiteltava.getY() - 1, kasiteltava.getX() - 1, kasiteltava);
-        asetaNaapurinEtaisyydet(kasiteltava.getY() - 1, kasiteltava.getX() + 1, kasiteltava);
-        asetaNaapurinEtaisyydet(kasiteltava.getY() + 1, kasiteltava.getX() - 1, kasiteltava);
+        
         asetaNaapurinEtaisyydet(kasiteltava.getY() - 1, kasiteltava.getX(), kasiteltava);
         asetaNaapurinEtaisyydet(kasiteltava.getY() + 1, kasiteltava.getX(), kasiteltava);
         asetaNaapurinEtaisyydet(kasiteltava.getY(), kasiteltava.getX() - 1, kasiteltava);
         asetaNaapurinEtaisyydet(kasiteltava.getY(), kasiteltava.getX() + 1, kasiteltava);
-
+        asetaNaapurinEtaisyydet(kasiteltava.getY() + 1, kasiteltava.getX() + 1, kasiteltava);
+        asetaNaapurinEtaisyydet(kasiteltava.getY() - 1, kasiteltava.getX() - 1, kasiteltava);
+        asetaNaapurinEtaisyydet(kasiteltava.getY() - 1, kasiteltava.getX() + 1, kasiteltava);
+        asetaNaapurinEtaisyydet(kasiteltava.getY() + 1, kasiteltava.getX() - 1, kasiteltava);
 
 
     }
@@ -47,32 +47,22 @@ public class Astar extends Hakualgoritmi {
 
     private void asetaNaapurinEtaisyydet(int naapurinY, int naapurinX,
             Koordinaatti kasiteltava) {
-        if (!voikoKulkea(naapurinY, naapurinX)) {
+        if (!voikoKulkea(naapurinY, naapurinX) || getKoordinaatti(naapurinY, naapurinX).getKayty()) {
             return;
         }
-        Koordinaatti naapuri = getKoordinaatti(naapurinY, naapurinX);
+        Koordinaatti naapuri = getKoordinaatti(naapurinY, naapurinX);  
         asetaEtaisyysAlkuun(naapuri, kasiteltava);
-        if (naapuri.getKeossa()) {
-            return;
-        }    
-        naapuri.setKeossa(true);
+        asetaEtaisyysMaaliin(naapuri);
+        
+       
 
-        getKeko().add(naapuri);
     }
 
     /**
-     * Laskee parametrina annetun koordinaatin etäisyyden maalisolmuun
-     */
-    /**
-     * Asettaa kartan kaikkien solmujen etäisyyden lähtöön
-     * äärettömäksi(Integer.MAX_VALUE) Lähtösolmun etäisyys itseensä = 0 Laskee
-     * jokaisen solmun suoran etäisyyden maalisolmusta
+     * Tulostaa reitin oikein pain reitti oliion
      *
-     * @param node
+     * @param maali maalisolmu
      * @param reitti
-     */
-    /*
-     * Lisää löydetyn reitin koordinaatti-oliot parametrina saatuun reittiin.
      */
     @Override
     protected void tulostaReitti(Koordinaatti node, Reitti reitti) {
@@ -80,10 +70,5 @@ public class Astar extends Hakualgoritmi {
             tulostaReitti(node.getEdellinen(), reitti);
         }
         reitti.lisaaNode(node);
-        //System.out.println("Y: " + node.getY() + " X: " + node.getX());
     }
-
-    /*
-     * tarkistaa onko parametrina saadussa koordinaatissa seinä ('#').
-     */
 }

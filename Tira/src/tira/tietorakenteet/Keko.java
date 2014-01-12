@@ -6,7 +6,7 @@ import tira.logiikka.Koordinaatti;
 /**
  * Oma toteutus keosta, joka saa parametrina Comparator-luokan ilmentymän, jonka
  * avulla tehdään kahden eri Koordinaatin väliset "suuruus"vertailut.
- * 
+ *
  * @author Ari
  */
 public class Keko {
@@ -17,9 +17,9 @@ public class Keko {
 
     /**
      * Luo keon johon voidaan lisätä 7 alkiota ennen kuin sen koko täytyy
-     * tuplata. 
-     * Saa parametrina Comparator-olion, jonka avulla tehään kahden Koordinaatin
-     * välinen vertailu.
+     * tuplata. Saa parametrina Comparator-olion, jonka avulla tehään kahden
+     * Koordinaatin välinen vertailu.
+     *
      * @param comparator
      */
     public Keko(Comparator<Koordinaatti> comparator) {
@@ -30,6 +30,7 @@ public class Keko {
 
     /**
      * Palauttaa keossa olevien alkioiden määrän.
+     *
      * @return
      */
     public int length() {
@@ -38,25 +39,25 @@ public class Keko {
 
     /**
      * Palauttaa keon "päällä" olevan alkion, jos keossa ei ole yhtään alkiota,
-     * niin palauttaa null. 
-     * Pienentää size:a yhdellä
+     * niin palauttaa null. Pienentää size:a yhdellä
+     *
      * @return
      */
     public Koordinaatti poll() {
         if (size < 1) {
             return null;
         }
+
         Koordinaatti pienin = keko[1];
         keko[1] = keko[size];
         size--;
         heapify(1);
         return pienin;
     }
-    
-    
 
     /**
      * Palauttaa tiedon siitä onko keossa yhtään alkiota.
+     *
      * @return
      */
     public boolean isEmpty() {
@@ -89,16 +90,18 @@ public class Keko {
                 swap(i, pienin);
                 heapify(pienin);
             }
-        } if (l == size && comparator.compare(keko[i], keko[l]) > 0) {
+        }
+        if (l == size && comparator.compare(keko[i], keko[l]) > 0) {
             swap(i, l);
         }
     }
 
     /**
-     * Lisää parametrina saadun Koordinaatin kekoon oikealle paikalle.
-     * Kasvattaa sizea yhdellä.
-     * Joos keon toteutuksene käytetyssä taulukossa ei ole enempää tilaa,
-     * niin tuplaa taulukon koon kutsumalla kasvataKokoa()-metodia.
+     * Lisää parametrina saadun Koordinaatin kekoon oikealle paikalle. Kasvattaa
+     * sizea yhdellä. Joos keon toteutuksene käytetyssä taulukossa ei ole
+     * enempää tilaa, niin tuplaa taulukon koon kutsumalla
+     * kasvataKokoa()-metodia.
+     *
      * @param node
      */
     public void add(Koordinaatti node) {
@@ -121,10 +124,32 @@ public class Keko {
     }
 
     private void kasvataKokoa() {
+
         Koordinaatti[] uusikeko = new Koordinaatti[size * 2];
         for (int i = 0; i < keko.length; i++) {
             uusikeko[i] = keko[i];
         }
         keko = uusikeko;
+    }
+
+    /**
+     * Palauttaa keossa ensimmaisena olevan olion
+     * @return ensimmainen olio
+     */
+    public Koordinaatti peak() {
+        return keko[1];
+    }
+    
+    public void delKoordinaatti(Koordinaatti koordinaatti){
+        
+        for(int i = 1; i <= size; i++){           
+            if (keko[i] == koordinaatti){
+                keko[i] = keko[size];
+                size--;
+                heapify(i);
+                break;
+                
+            }
+        }
     }
 }

@@ -25,16 +25,18 @@ public abstract class Hakualgoritmi {
     }
 
     /**
+     * Getteri algoritmin käyttämälle kartalle
      *
-     * @return
+     * @return Palauttaa algoritmin käyttämän kartan
      */
     protected Kartta getKartta() {
         return this.kartta;
     }
 
     /**
+     * Palauttaa keon
      *
-     * @return
+     * @return algoritmin käyttämä keko
      */
     protected Keko getKeko() {
         return this.keko;
@@ -42,7 +44,7 @@ public abstract class Hakualgoritmi {
 
     /**
      *
-     * @return
+     * @return palauttaa maalisolmun
      */
     protected Koordinaatti getMaali() {
         return maali;
@@ -50,7 +52,7 @@ public abstract class Hakualgoritmi {
 
     /**
      *
-     * @return
+     * @return Palauttaa lahtosolmun
      */
     protected Koordinaatti getLahto() {
         return lahto;
@@ -58,16 +60,17 @@ public abstract class Hakualgoritmi {
 
     /**
      *
-     * @param kartta
+     * @param kartta kartta joka asetetaan luokkamuuttujaksi
      */
     public void setKartta(Kartta kartta) {
         this.kartta = kartta;
     }
 
     /**
+     * Etsii reitin kartalla merkitys lahto- ja maalisolmujen valilla
      *
-     * @param kartta
-     * @return
+     * @param kartta kartta jolta rietti halutaan löytää
+     * @return reitti-olio, jossa alkio ovat lahto -> maali järjestyksessä
      */
     public Reitti findPath(Kartta kartta) {
         timer = new Timer();
@@ -75,7 +78,6 @@ public abstract class Hakualgoritmi {
         this.lahto = kartta.getLahto();
         this.maali = kartta.getMaali();
         this.timer.start();
-        //Keko keko = new Keko(new AstarKoordinaattiComparator());
         keko = new Keko(new AstarKoordinaattiComparator());
         Reitti reitti = new Reitti();
         relaxAll();
@@ -83,18 +85,14 @@ public abstract class Hakualgoritmi {
 
         while (!maali.getKayty() && !keko.isEmpty()) {
             Koordinaatti kasiteltava = keko.poll();
-//            if (kasiteltava.getKayty() || kasiteltava.getKeossa()) {
-//                continue;
-//            }
-            //  System.out.println("iteraation n");
-            lisaaSeuraajatKekoon(kasiteltava);
             kasiteltava.setKayty(true);
+            lisaaSeuraajatKekoon(kasiteltava);
             if (maali.getKayty()) {
                 this.timer.stop();
                 tulostaReitti(maali, reitti);
                 break;
             }
-            
+
         }
 
 
@@ -102,18 +100,21 @@ public abstract class Hakualgoritmi {
     }
 
     /**
+     * Palauttaa algoritmin käyttämän suoritusajan
      *
-     * @return
+     * @return aika millisekuntteina
      */
     public long suoritusaika() {
         return timer.time();
     }
 
+    /**
+     *
+     */
     public void relaxAll() {
         for (int i = 0; i < kartta.getKorkeus(); i++) {
             for (int j = 0; j < kartta.getLeveys(); j++) {
                 kartta.getKoordinaatti(i, j).setAlkuun(Integer.MAX_VALUE);
-                asetaEtaisyysMaaliin(getKoordinaatti(i, j));
                 kartta.getKoordinaatti(i, j).setKayty(false);
                 kartta.getKoordinaatti(i, j).setKeossa(false);
                 getKoordinaatti(i, j).setEdellinen(null);
@@ -123,78 +124,81 @@ public abstract class Hakualgoritmi {
     }
 
     /**
+     * Palauttaa true, jos nodessa on seinä, muuten false
      *
-     * @param node
-     * @return
+     * @param node node josta halutaan selvittää onko se seinä
+     * @return boolea-arvo, onko seinä vai ei
      */
     protected boolean onkoSeina(Koordinaatti node) {
         return node.getMerkki() == '#';
     }
 
     /**
+     * Palauttaa true, jos nodessa on seinä, muuten false
      *
-     * @param y
-     * @param x
-     * @return
+     * @param y y-akselin arvo
+     * @param x x-akselin arvo
+     * @return boolea-arvo, onko seinä vai ei
      */
     protected boolean onkoSeina(int y, int x) {
         return kartta.onSeina(y, x);
     }
 
     /**
+     * Palauttaa true jos koordinaatissa (y,x) on maalisolmu
      *
-     * @param y
-     * @param x
-     * @return
+     * @param y y-akselin arvo
+     * @param x x-akselin arvo
+     * @return palauttaa true, jos koordinaatti (y,x) on maali
      */
     protected boolean onkoMaali(int y, int x) {
         return kartta.onkoMaali(y, x);
     }
 
     /**
+     * Tulostaa reitin oikein pain reitti oliion
      *
-     * @param maali
+     * @param maali maalisolmu
      * @param reitti
      */
     protected abstract void tulostaReitti(Koordinaatti maali, Reitti reitti);
 
     /**
+     * Lisaa kasiteltavana olevan noden seuraajat kekoon
      *
-     * @param kasiteltava
+     * @param kasiteltava kasittelyssa oleva koordinaatti
      */
     protected abstract void lisaaSeuraajatKekoon(Koordinaatti kasiteltava);
 
     /**
+     * Palauttaa (y,x) koordinaatin
      *
-     * @param y
-     * @param x
-     * @return
+     * @param y y-akselin arvo
+     * @param x x-akselin arvo
+     * @return Koordinaatti paikassa (y,x)
      */
     protected Koordinaatti getKoordinaatti(int y, int x) {
         return kartta.getKoordinaatti(y, x);
     }
 
     /**
+     * Palauttaa true jos pisteessä (y,x) ei ole seinää, ja se on kartan sisällä
      *
-     * @param y
-     * @param x
-     * @return
+     * @param y y-akselin arvo
+     * @param x x-akselin arvo
+     * @return true jos voi kulkea, muuten false
      */
     public boolean voikoKulkea(int y, int x) {
         return kartta.voikoKulkea(y, x);
     }
 
     /**
+     * Asettaa parametrina saatuun koordinaattiin suoran etäisyyden maaliin
      *
-     * @param naapuri
+     * @param naapuri node, jonka etäisyys maaliin halutaan asettaa
      */
     protected void asetaEtaisyysMaaliin(Koordinaatti naapuri) {
-//        double vaaka = Math.pow(Math.abs(naapuri.getX() - maali.getX()), 2);
-//        double pysty = Math.pow(Math.abs(naapuri.getY() - maali.getY()), 2);
-//        
-//        double etaisyys = Math.sqrt(vaaka+pysty);
-//       
-        
+
         double suurempi = Math.max(Math.abs(naapuri.getY() - maali.getY()),
                 Math.abs(naapuri.getX() - maali.getX()));
         double pienempi = Math.min(Math.abs(naapuri.getY() - maali.getY()),
@@ -205,26 +209,35 @@ public abstract class Hakualgoritmi {
 
         naapuri.setMaaliin(etaisyys);
 
-    }
-    /*
-     * Asettaa annetun koordinaatin etäisyyden lähtösolmuun.
-     */
 
+    }
+
+    /**
+     * Asettaa annetun koordinaatin etäisyyden lähtösolmuun.
+     *
+     * @param naapuri koordinaatti jonka etäisyys halutaan asettaa
+     * @param kasiteltava naapuri edeltaja
+     */
     protected void asetaEtaisyysAlkuun(Koordinaatti naapuri,
             Koordinaatti kasiteltava) {
-        int suurempi = Math.max(Math.abs(naapuri.getX() - kasiteltava.getX()),
+        double suurempi = Math.max(Math.abs(naapuri.getX() - kasiteltava.getX()),
                 Math.abs(naapuri.getY() - kasiteltava.getY()));
         double matkaAlkuun = kasiteltava.getAlkuun();
         if (naapuri.getX() == kasiteltava.getX()
                 || naapuri.getY() == kasiteltava.getY()) {
-            matkaAlkuun += 1 * suurempi;
+            matkaAlkuun += 1.0 * suurempi;
         } else {
-            matkaAlkuun += Math.sqrt(2) * suurempi;
+            matkaAlkuun += 1.41 * suurempi;
         }
 
         if (naapuri.getAlkuun() > matkaAlkuun) {
+            if (naapuri.getKeossa()) {
+                getKeko().delKoordinaatti(naapuri);
+            }
             naapuri.setAlkuun(matkaAlkuun);
             naapuri.setEdellinen(kasiteltava);
+            getKeko().add(naapuri);
+            naapuri.setKeossa(true);
         }
     }
 }

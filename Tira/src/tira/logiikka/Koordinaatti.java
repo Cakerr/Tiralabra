@@ -18,8 +18,8 @@ public class Koordinaatti {
     /**
      * Luodaan koordinaatti, joka saa parametrina x- ja y-akselien arvot.
      *
-     * @param y
-     * @param x
+     * @param y y-akselin arvo
+     * @param x x-akslin arvo
      */
     public Koordinaatti(int y, int x) {
         this.x = x;
@@ -30,7 +30,7 @@ public class Koordinaatti {
     /**
      * Palauttaaa koordinaatin y-arvon.
      *
-     * @return
+     * @return y-akselin arvo
      */
     public int getY() {
         return y;
@@ -39,7 +39,7 @@ public class Koordinaatti {
     /**
      * Palauttaa koordinaatin x-arvon
      *
-     * @return
+     * @return x-akselin arvo
      */
     public int getX() {
         return x;
@@ -48,11 +48,11 @@ public class Koordinaatti {
     /**
      * Asettaa koordinaatin suoran etäisyyden maalisolmuun.
      *
-     * @param maaliin
+     * @param maaliin haluttu etäisyys maaliin
      */
     public void setMaaliin(double maaliin) {
         if (maaliin < 0){
-            this.maaliin = 0;
+            this.maaliin = 0.0;
         }
         this.maaliin = maaliin;
     }
@@ -60,7 +60,7 @@ public class Koordinaatti {
     /**
      * Palauttaa koordinaatin suoran etäisyyden maalisolmuun.
      *
-     * @return
+     * @return koordinaatin etäisyys maaliin
      */
     public double getMaaliin() {
         return maaliin;
@@ -69,7 +69,7 @@ public class Koordinaatti {
     /**
      * Asettaa koordinaatin etäisyyden aloitussolmuun.
      *
-     * @param alkuun
+     * @param alkuun haluttu etäisyys lähtösolmuun
      */
     public void setAlkuun(double alkuun) {
         if (alkuun < 0){
@@ -81,7 +81,7 @@ public class Koordinaatti {
     /**
      * Palauttaa koordinaatin etäisyyden aloitussolmuun.
      *
-     * @return
+     * @return koordinaatin etäyisyys lähtösolmuun
      */
     public double getAlkuun() {
         return alkuun;
@@ -90,7 +90,7 @@ public class Koordinaatti {
     /**
      * Palauttaa tiedon, siitä onko etsintäkerralla käyty kyseisessä 
      * koordinaatissa
-     * @return
+     * @return boolean onko koordinaatissa käyty
      */
     public boolean getKayty() {
         return kayty;
@@ -98,7 +98,7 @@ public class Koordinaatti {
 
     /**
      * Asettaa tiedon, siitä onko etsintä käynyt kyseisessä koordinaatissa
-     * @param kayty
+     * @param kayty 
      */
     public void setKayty(boolean kayty) {
         this.kayty = kayty;
@@ -106,7 +106,7 @@ public class Koordinaatti {
 
     /**
      * Palauttaa koordinaatin, josta "this."koordinaatiin on päästy.
-     * @return
+     * @return palauttaa edeltäjän
      */
     public Koordinaatti getEdellinen() {
         return edellinen;
@@ -114,7 +114,7 @@ public class Koordinaatti {
 
     /**
      * Asettaa edellisen koordinaatin
-     * @param edellinen
+     * @param edellinen aluttu edeltaja talle oliolle
      */
     public void setEdellinen(Koordinaatti edellinen) {
         this.edellinen = edellinen;
@@ -122,7 +122,7 @@ public class Koordinaatti {
     
     /**
      * Asettaa koordinaatille karttamerkin, joka tulkitaan esim. # -> seinä
-     * @param merkki
+     * @param merkki haluttu merkki
      */
     public void setMerkki(char merkki){
         this.merkki = merkki;
@@ -130,14 +130,14 @@ public class Koordinaatti {
     
     /**
      * Palauttaa kyseisen koordinaatin karttamerkin
-     * @return
+     * @return koordinaatissa oleva merkki
      */
     public char getMerkki(){
         return this.merkki;
     }
     
     /**
-     * 
+     * Palauttaa tiedon siitä, onko kyseinen koordinaatti laitettu jo kekoon
      * @param onko
      */
     public void setKeossa(boolean onko){
@@ -145,8 +145,8 @@ public class Koordinaatti {
     }
     
     /**
-     * 
-     * @return
+     * palauttaa tiedon siitän onko kyseinen koordinaatti jo laitettu kekoon
+     * @return true jos on
      */
     public boolean getKeossa(){
         return keossa;
