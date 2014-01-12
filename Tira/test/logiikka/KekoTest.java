@@ -182,7 +182,7 @@ public class KekoTest {
         assertEquals(y, keko.poll());
         //assertEquals(y, keko.poll());
     }
-/*
+
     @Test
     public void palauttaaAlkiotSamassaJärjestyksessäKuinJavanToteutus() {
         PriorityQueue<Koordinaatti> java = new PriorityQueue<>(1, compa);
@@ -202,7 +202,7 @@ public class KekoTest {
         }
 
     }
-*/
+
     @Test
     public void insertSuhdeJavanPriorityQueueToteutukseenonAlle2() {
         PriorityQueue java = new PriorityQueue<>(8, compa);

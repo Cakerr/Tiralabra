@@ -9,6 +9,10 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import tira.logiikka.Solver;
 
+/**
+ *
+ * @author Ari
+ */
 public class Karttaruutu extends JFrame {
 
     private JPanel tausta;
@@ -16,14 +20,20 @@ public class Karttaruutu extends JFrame {
     private JPanel ylapalkki;
     private KarttaAlusta ruudukko;
     private JLabel aika;
+    private JLabel askeleet;
     private ButtonGroup algoritmi;
     private JRadioButton astar;
+    private JRadioButton dijkstra;
     private JRadioButton jps;
     private Solver ohjain;
     private JButton etsi;
     private JButton uusiKartta;
     private JButton lataaKartta;
 
+    /**
+     *
+     * @param ratkaisija
+     */
     public Karttaruutu(Solver ratkaisija) {
         this.ohjain = ratkaisija;
 
@@ -47,6 +57,7 @@ public class Karttaruutu extends JFrame {
         alapalkki = new JPanel();
         ylapalkki = new JPanel();
         aika = new JLabel();
+        askeleet = new JLabel();
 
         ruudukko = new KarttaAlusta(ohjain);
         uusiKartta = new JButton("luo uusi kartta");
@@ -54,8 +65,9 @@ public class Karttaruutu extends JFrame {
         algoritmi = new ButtonGroup();
         astar = new JRadioButton("A*");
         jps = new JRadioButton("Jump Point Search");
+        dijkstra = new JRadioButton("Dijkstra");
         etsi = new JButton("Etsi reitti");
-        etsi.addMouseListener(new AloitusListener(ohjain, this));
+        etsi.addMouseListener(new AloitusListener(ohjain, this, astar, jps, dijkstra));
         uusiKartta.addMouseListener(new UusiKarttaListener(ohjain));
         lataaKartta.addMouseListener(new KartanLatausListener(ohjain));
 
@@ -69,13 +81,16 @@ public class Karttaruutu extends JFrame {
 
         algoritmi.add(astar);
         algoritmi.add(jps);
+        algoritmi.add(dijkstra);
         astar.setSelected(true);
         ylapalkki.add(astar);
         ylapalkki.add(jps);
+        ylapalkki.add(dijkstra);
         ylapalkki.add(etsi);
         ylapalkki.add(uusiKartta);
         ylapalkki.add(lataaKartta);
         alapalkki.add(aika);
+        alapalkki.add(askeleet);
         tausta.add(ruudukko, BorderLayout.CENTER);
         tausta.add(alapalkki, BorderLayout.EAST);
         tausta.add(ylapalkki, BorderLayout.NORTH);
@@ -83,36 +98,43 @@ public class Karttaruutu extends JFrame {
 
     }
 
+    /**
+     *
+     */
     public void maalaaReitti() {
+        ruudukko.paintComponent(ruudukko.getGraphics());
         onkoReittia();
-        for (int i = 1; i < ohjain.getKartanKorkeus(); i++) {
-            for (int j = 0; j < ohjain.getKartanLeveys(); j++) {
-                
-                
-               
-                if (ohjain.onKayty(i, j)){
-                    ruudukko.varitaKayty(i, j, ruudukko.getGraphics());
-                }
-                
-            }
-        }
-        for (int i = 0; i < ohjain.getReitinPituus(); i++){
-            int[] jee = ohjain.getSeuraava();
-            int y = jee[0];
-            int x = jee[1];
-            if (!ohjain.onMaali(y, x) && !ohjain.onLahto(y, x)) {
+        //if (onkoReittia()) {
+//            for (int i = 1; i < ohjain.getKartanKorkeus(); i++) {
+//                for (int j = 0; j < ohjain.getKartanLeveys(); j++) {
+//                    if (ohjain.onKayty(i, j)) {
+//                        ruudukko.varitaKayty(i, j, ruudukko.getGraphics());
+//                    }
+//
+//                }
+//            }
+            for (int i = 0; i < ohjain.getReitinPituus(); i++) {
+                int[] jee = ohjain.getSeuraava();
+                int y = jee[0];
+                int x = jee[1];
+                if (!ohjain.onMaali(y, x) && !ohjain.onLahto(y, x)) {
                     ruudukko.varitaReitti(y, x, ruudukko.getGraphics());
                 }
+            //}
         }
-        
     }
 
-    private void onkoReittia() {
+    private boolean onkoReittia() {
         if (ohjain.getReitinPituus() == 0) {
             JOptionPane.showMessageDialog(null, "Reittiä ei löytynyt!", "OH NOES!", 2);
+            return false;
         }
+        return true;
     }
 
+    /**
+     *
+     */
     public void piirraKartta() {
 
         int korkeus = ohjain.getKartanKorkeus();
@@ -128,9 +150,15 @@ public class Karttaruutu extends JFrame {
         ruudukko.paintComponents(ruudukko.getGraphics());
         repaint();
 
+
     }
 
+    /**
+     *
+     */
     public void asetaAika() {
+        askeleet.setText("Lahdosta maaliin tarvittiin " + ohjain.getAskeleetMaaliin() + "askelta.");
         aika.setText("Algoritmin suoritukseen meni " + ohjain.getSuoritusaika() + "ms.");
+        aika.update(this.getGraphics());
     }
 }

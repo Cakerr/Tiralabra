@@ -17,6 +17,10 @@ public class UusiKarttaListener extends JPanel implements MouseListener  {
 
     private Solver ohjain;
 
+    /**
+     * 
+     * @param ohjain
+     */
     public UusiKarttaListener(Solver ohjain) {
         this.ohjain = ohjain;
     }

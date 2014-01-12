@@ -52,6 +52,8 @@ public class Keko {
         heapify(1);
         return pienin;
     }
+    
+    
 
     /**
      * Palauttaa tiedon siitä onko keossa yhtään alkiota.

@@ -152,10 +152,20 @@ public class Kartta {
         return kartta[y][x];
     }
 
+    /**
+     * 
+     * @param y
+     * @param x
+     * @return
+     */
     public boolean onSeina(int y, int x) {
         return kartta[y][x].getMerkki() == '#';
     }
 
+    /**
+     * 
+     * @return
+     */
     public BufferedImage getKuva() {
         return this.kuva;
     }
@@ -169,10 +179,25 @@ public class Kartta {
         return false;
     }
 
+    /**
+     * 
+     * @param y
+     * @param x
+     * @return
+     */
     public boolean onkoMaali(int y, int x) {
+        if (y >= korkeus || x >= leveys ||y < 0 || x < 0){
+            return false;
+        }
         return kartta[y][x] == maali;
     }
 
+    /**
+     * 
+     * @param y
+     * @param x
+     * @return
+     */
     public boolean voikoKulkea(int y, int x) {
         if (y >= korkeus || x >= leveys || y < 0 || x < 0 || onSeina(y, x)) {
             return false;

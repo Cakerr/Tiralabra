@@ -26,12 +26,6 @@ public class AstarKoordinaattiComparator implements Comparator<Koordinaatti> {
         double o1Etaisyys = k1.getAlkuun() + k1.getMaaliin();
         double o2Etaisyys = k2.getAlkuun() + k2.getMaaliin();
 
-        if (o1Etaisyys - o2Etaisyys > 0) {
-            return 1;
-        } else if (o1Etaisyys - o2Etaisyys < 0) {
-            return -1;
-        } else {
-            return 0;
-        }
+        return (int) Math.signum(o1Etaisyys - o2Etaisyys);
     }
 }

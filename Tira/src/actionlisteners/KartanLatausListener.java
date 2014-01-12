@@ -21,6 +21,10 @@ public class KartanLatausListener implements MouseListener {
 
     private Solver ohjain;
 
+    /**
+     * 
+     * @param ratkaisija
+     */
     public KartanLatausListener(Solver ratkaisija) {
         this.ohjain = ratkaisija;
     }

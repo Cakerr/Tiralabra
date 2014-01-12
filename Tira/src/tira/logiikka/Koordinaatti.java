@@ -136,10 +136,18 @@ public class Koordinaatti {
         return this.merkki;
     }
     
+    /**
+     * 
+     * @param onko
+     */
     public void setKeossa(boolean onko){
         this.keossa = onko;
     }
     
+    /**
+     * 
+     * @return
+     */
     public boolean getKeossa(){
         return keossa;
     }
